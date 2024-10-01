@@ -1,0 +1,64 @@
+navbar {
+    background-color: #c475a1; /* تغيير لون الخلفية */
+    height: 60px;
+    width: 100%; /* تأكد أن الشريط يأخذ العرض الكامل */
+    display: flex;
+    justify-content: space-between; /* توزيع العناصر بالتساوي */
+    align-items: center;
+    padding: 0 20px;
+    position: fixed; /* تثبيت الشريط في أعلى الصفحة */
+    top: 0;
+    z-index: 999;
+  }
+  
+  .navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+  }
+  
+  .navbar-logo {
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+  .navbar-menu {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin: 0;
+  }
+  
+  .navbar-item {
+    margin-left: 20px;
+  }
+  
+  .navbar-link {
+    color:  #c475a1;
+    font-size: 18px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .navbar-link:hover {
+    color:  #c475a1;
+  }
+  
+  .navbar-link button {
+    background-color: #c475a1;
+    border: none;
+    color: #c475a1;  
+    padding: 5px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .navbar-link button:hover {
+    background-color: #a65b87; /* لون الزر عند التمرير */
+    color: white;
+  }

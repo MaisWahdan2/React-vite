@@ -1,0 +1,104 @@
+/* تنسيق الحاوية الرئيسية والبطاقة */
+.user-profile-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    background-color: #f1f3f4;
+  }
+  
+  .user-profile {
+    max-width: 500px;
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease-in-out;
+    width: 460px;
+  }
+  .user-profile:hover {
+    transform: translateY(-10px);
+  }
+  
+  .profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  
+  .profile-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+  
+  .profile-image:hover {
+    transform: scale(1.15);
+  }
+  
+  h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+  }
+  
+  /* تنسيق الخط المقطع */
+  .profile-divider {
+    border: none;
+    border-top: 1px dashed #bbb;
+    width: 100%;
+    margin: 20px 0;
+  }
+  
+  .profile-details {
+    text-align: left;
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .profile-details p {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    line-height: 1.6;
+    color: #555;
+  }
+  
+  .profile-details strong {
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .profile-details a {
+    color: #4c85c2;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease;
+  }
+  
+  .profile-details a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+  
+  .profile-details ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    color: #555;
+  }
+  
+  .profile-details ul li {
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+  }  

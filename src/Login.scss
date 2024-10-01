@@ -1,0 +1,68 @@
+
+@import './variables'; // استيراد المتغيرات والـ mixin
+
+.login-container {
+    background-image: url('C:/Users/moham/react-app/src/assets/img.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    width: 100vw; /* تعديل العرض ليكون مناسباً */
+    background-color: rgba(240, 240, 240, 0.9); /* تحسين اللون الخلفي لجعل المحتوى يظهر بوضوح */
+}
+
+.login-card {
+    background-color: rgba(255, 255, 255, 0.95); /* تخفيف الشفافية لجعل النص أكثر وضوحًا */
+    border-radius: 12px; /* زيادة انحناء الزوايا */
+    padding: 30px;
+    width: 350px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* تحسين الظل */
+    text-align: center;
+    transition: transform 0.3s ease-in-out; /* إضافة تأثير عند التمرير */
+
+    h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+            border-color: #c475a1;
+            outline: none;
+        }
+    }
+
+    .btn-submit {
+        background-color: #c475a1;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-size: 16px;
+        font-weight: bold;
+        width: 100%;
+
+        &:hover {
+            background-color: #a65b87;
+        }
+    }
+
+    .error-message {
+        color: #ff4d4f;
+        margin-bottom: 10px;
+    }
+}
