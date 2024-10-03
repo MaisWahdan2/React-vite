@@ -3,12 +3,15 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './HomePage.scss';
 import { AuthContext } from './AuthContext'; // يحتوي على معلومات المستخدم المسجل للدخول.
+import _ from 'lodash'; // لاستعمال debounce
 
 const HomePage = () => {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]); // بيانات المستخدمين المصفاة محليًا
   const [sortOrder, setSortOrder] = useState('asc');
   const [sortBy, setSortBy] = useState('id');
   const [selectedOccupation, setSelectedOccupation] = useState('All');
+  const [searchQuery, setSearchQuery] = useState(''); // حقل البحث عن الاسم
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -37,27 +40,13 @@ const HomePage = () => {
     'Student'
   ];
 
+  // جلب البيانات مرة واحدة عند التحميل الأول
   useEffect(() => {
     setLoading(true);
     axios.get('https://freetestapi.com/api/v1/users')
       .then(response => {
-        let filteredUsers = response.data;
-
-        // Filter based on selected occupation
-        if (selectedOccupation && selectedOccupation !== 'All') {
-          filteredUsers = filteredUsers.filter(user => user.occupation === selectedOccupation);
-        }
-
-        // Sort based on the sortBy and sortOrder states
-        filteredUsers.sort((a, b) => {
-          if (sortOrder === 'asc') {
-            return a[sortBy] > b[sortBy] ? 1 : -1;
-          } else {
-            return a[sortBy] < b[sortBy] ? 1 : -1;
-          }
-        });
-
-        setUsers(filteredUsers);
+        setUsers(response.data);
+        setFilteredUsers(response.data); // تعيين البيانات المصفاة للبيانات المبدئية
         setLoading(false);
       })
       .catch(error => {
@@ -65,19 +54,52 @@ const HomePage = () => {
         setError('Failed to fetch users.');
         setLoading(false);
       });
-  }, [sortOrder, sortBy, selectedOccupation]);
+  }, []);
+
+  // تصفية وفرز البيانات محليًا بناءً على البحث والوظيفة
+  useEffect(() => {
+    let filteredData = [...users];
+
+    // Filter based on selected occupation
+    if (selectedOccupation && selectedOccupation !== 'All') {
+      filteredData = filteredData.filter(user => user.occupation === selectedOccupation);
+    }
+
+    // Filter based on search query (name)
+    if (searchQuery) {
+      filteredData = filteredData.filter(user =>
+        user.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Sort based on the sortBy and sortOrder states
+    filteredData.sort((a, b) => {
+      if (sortOrder === 'asc') {
+        return a[sortBy] > b[sortBy] ? 1 : -1;
+      } else {
+        return a[sortBy] < b[sortBy] ? 1 : -1;
+      }
+    });
+
+    setFilteredUsers(filteredData);
+  }, [sortOrder, sortBy, selectedOccupation, searchQuery, users]);
+
+  // لتأخير البحث لمدة 2000 ميلي ثانية (2 ثانية)
+  const debouncedSearch = _.debounce((query) => {
+    setSearchQuery(query);
+  }, 2000); // تأخير لمدة ثانيتين
 
   // Get current users (for the current page)
   const indexOfLastUser = currentPage * itemsPerPage;
   const indexOfFirstUser = indexOfLastUser - itemsPerPage;
-  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfFirstUser + itemsPerPage);
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // Go to the next page
   const nextPage = () => {
-    if (currentPage < Math.ceil(users.length / itemsPerPage)) {
+    if (currentPage < Math.ceil(filteredUsers.length / itemsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -109,6 +131,14 @@ const HomePage = () => {
             ))}
           </select>
 
+          {/* Search by Name */}
+          <input
+            type="text"
+            className="form-control w-50"
+            placeholder="Search by Name"
+            onChange={(e) => debouncedSearch(e.target.value)} // استخدام debounce
+          />
+
           {/* Sort Button */}
           <button
             className="btn btn-secondary"
@@ -129,11 +159,11 @@ const HomePage = () => {
 
         {/* Handling loading and error states */}
         {loading ? (
-          <p>جاري التحميل...</p>
+          <p>Loading...</p>
         ) : error ? (
           <p>{error}</p>
-        ) : users.length === 0 ? (
-          <p>لا يوجد مستخدمين لعرضهم.</p>
+        ) : filteredUsers.length === 0 ? (
+          <p>There are no users to display.</p>
         ) : (
           <>
             <div className="table-responsive">
@@ -166,7 +196,7 @@ const HomePage = () => {
             {/* Pagination Component */}
             <Pagination
               itemsPerPage={itemsPerPage}
-              totalItems={users.length}
+              totalItems={filteredUsers.length}
               paginate={paginate}
               currentPage={currentPage}
               nextPage={nextPage}
@@ -181,11 +211,11 @@ const HomePage = () => {
 
 // Pagination Component
 const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage, nextPage, prevPage }) => {
-  const pageNumbers = [];
+  const pageNumbers = [];// التي تحتوي على أرقام الصفحات المتاحة
 
   for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
     pageNumbers.push(i);
-  }
+  }//يُستخدم لحساب العدد الكلي للصفحات
 
   return (
     <nav>
